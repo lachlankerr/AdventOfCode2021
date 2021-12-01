@@ -4,8 +4,14 @@ import java.util.List;
 
 import Utils.Utilities;
 
+/**
+ * Counts the number of times a depth measurement increases
+ */
 public class Solution {
 
+    /**
+     * @return The number of times a depth measurement increases
+     */
     public int Part1() {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
 
@@ -21,6 +27,9 @@ public class Solution {
         return count;
     }
 
+    /**
+     * @return The number of times a depth measurement increases based on a three-measurement sliding window
+     */
     public int Part2() {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
 
@@ -47,7 +56,7 @@ public class Solution {
     }
 
     /**
-     * Optimal solution, based of reddit answers
+     * Optimal solution, based off reddit answers
      * @param n window size
      */
     public int Part1or2(int n) {
