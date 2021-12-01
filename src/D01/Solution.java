@@ -4,7 +4,7 @@ import java.util.List;
 
 import Utils.Utilities;
 
-public class P1 {
+public class Solution {
 
     public int Part1() {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
@@ -46,9 +46,29 @@ public class P1 {
         return count;
     }
 
+    /**
+     * Optimal solution, based of reddit answers
+     * @param n window size
+     */
+    public int Part1or2(int n) {
+        List<Integer> input = Utilities.getInputAsIntegerList(this);
+
+        int count = 0;
+
+        for (int i = n; i < input.size(); i++) { //use n to prevent index out of range
+            if (input.get(i) > input.get(i - n)) { //since the windows will have the same numbers apart from the ends
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
-        P1 p1 = new P1();
-        System.out.println(p1.Part1());
-        System.out.println(p1.Part2());
+        Solution day1 = new Solution();
+        System.out.println(day1.Part1());
+        System.out.println(day1.Part2());
+        System.out.println("===");
+        System.out.println(day1.Part1or2(1));
+        System.out.println(day1.Part1or2(3));
     }
 }
