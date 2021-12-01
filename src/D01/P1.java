@@ -7,7 +7,7 @@ import Utils.Utilities;
 public class P1 {
 
     public int Part1() {
-        List<Integer> input = Utilities.getInputAsIntegerList(getClass().getResource("input.txt").getPath());
+        List<Integer> input = Utilities.getInputAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
         int count = 0;
@@ -22,7 +22,7 @@ public class P1 {
     }
 
     public int Part2() {
-        List<Integer> input = Utilities.getInputAsIntegerList(getClass().getResource("input.txt").getPath());
+        List<Integer> input = Utilities.getInputAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
         int n = 3;

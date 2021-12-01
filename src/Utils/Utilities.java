@@ -8,8 +8,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Utilities {
-    public static List<String> getInputAsStringList(String path) {
-        try(Scanner s = new Scanner(new File(path)).useDelimiter(System.lineSeparator())) {
+    public static List<String> getInputAsStringList(Object obj) {
+        try(Scanner s = new Scanner(new File(obj.getClass().getResource("input.txt").getPath())).useDelimiter(System.lineSeparator())) {
             List<String> list = new ArrayList<String>();
             while (s.hasNext()){
                 list.add(s.next());
@@ -23,7 +23,7 @@ public class Utilities {
         return null;
     }
 
-    public static List<Integer> getInputAsIntegerList(String path) {
-        return getInputAsStringList(path).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+    public static List<Integer> getInputAsIntegerList(Object obj) {
+        return getInputAsStringList(obj).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
     }
 }
