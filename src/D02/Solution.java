@@ -5,7 +5,7 @@ import java.util.List;
 import Utils.Utilities;
 
 public class Solution {
-    public int Part1() {
+    public int part1() {
         List<String> input = Utilities.getInputAsStringList(this);
         int horizontal = 0;
         int depth = 0;
@@ -21,7 +21,7 @@ public class Solution {
         return horizontal * depth;
     }
     
-    public int Part2() {
+    public int part2() {
         List<String> input = Utilities.getInputAsStringList(this);
         int horizontal = 0;
         int depth = 0;
@@ -39,8 +39,8 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        Solution day1 = new Solution();
-        System.out.println(day1.Part1());
-        System.out.println(day1.Part2());
+        Solution day2 = new Solution();
+        System.out.println(day2.part1());
+        System.out.println(day2.part2());
     }
 }

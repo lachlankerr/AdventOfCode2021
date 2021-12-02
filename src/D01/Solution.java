@@ -12,7 +12,7 @@ public class Solution {
     /**
      * @return The number of times a depth measurement increases
      */
-    public int Part1() {
+    public int part1() {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
@@ -30,7 +30,7 @@ public class Solution {
     /**
      * @return The number of times a depth measurement increases based on a three-measurement sliding window
      */
-    public int Part2() {
+    public int part2() {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
@@ -59,7 +59,7 @@ public class Solution {
      * Optimal solution, based off reddit answers
      * @param n window size
      */
-    public int Part1or2(int n) {
+    public int part1or2(int n) {
         List<Integer> input = Utilities.getInputAsIntegerList(this);
 
         int count = 0;
@@ -74,10 +74,10 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution day1 = new Solution();
-        System.out.println(day1.Part1());
-        System.out.println(day1.Part2());
+        System.out.println(day1.part1());
+        System.out.println(day1.part2());
         System.out.println("===");
-        System.out.println(day1.Part1or2(1));
-        System.out.println(day1.Part1or2(3));
+        System.out.println(day1.part1or2(1));
+        System.out.println(day1.part1or2(3));
     }
 }
