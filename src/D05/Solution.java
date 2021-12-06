@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import Utils.Utilities;
@@ -17,7 +18,7 @@ public class Solution {
         for (String lineString : input) {
             String[] parts = lineString.split(" -> ");
             String[] x1y1 = parts[0].split(",");
-            String[] x2y2 = parts[0].split(",");
+            String[] x2y2 = parts[1].split(",");
             int x1 = Integer.parseInt(x1y1[0]);
             int y1 = Integer.parseInt(x1y1[1]);
             int x2 = Integer.parseInt(x2y2[0]);
@@ -51,6 +52,7 @@ public class Solution {
     public int part2() {
         return 0;
     }
+
     public static void main(String[] args) {
         Solution day05 = new Solution();
         System.out.println(day05.part1());
@@ -68,7 +70,22 @@ public class Solution {
 
         public List<Point> getPointsOnLine() {
             List<Point> points = new ArrayList<Point>();
-            //todo
+
+            //only works for horizontal and vertical lines
+            int xDis = Math.abs(one.x - two.x);
+            int yDis = Math.abs(one.y - two.y);
+
+            if (xDis == 0) {
+                for (int i = 0; i <= yDis; i++) {
+                    points.add(new Point(one.x, Math.min(one.y, two.y) + i));
+                }
+            }
+            else if (yDis == 0) {
+                for (int i = 0; i <= xDis; i++) {
+                    points.add(new Point(Math.min(one.x, two.x) + i, one.y));
+                }
+            }
+            
             return points;
         }
     }
@@ -92,6 +109,11 @@ public class Solution {
                 return false;
             Point point = (Point) obj;
             return point.x == x && point.y == y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 }
