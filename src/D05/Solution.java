@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 import Utils.Utilities;
 
 public class Solution {
-    Map<Point, Integer> grid = new HashMap<Point, Integer>();
 
-    public int part1() {
+    public int part1or2(boolean isPart2) {
+        Map<Point, Integer> grid = new HashMap<Point, Integer>();
         List<String> input = Utilities.getInputAsStringList(this);
         for (String lineString : input) {
             String[] parts = lineString.split(" -> ");
@@ -24,16 +24,14 @@ public class Solution {
             int x2 = Integer.parseInt(x2y2[0]);
             int y2 = Integer.parseInt(x2y2[1]);
 
-            if (x1 == x2 || y1 == y2) {
-                Line line = new Line(x1, y1, x2, y2);
-                List<Point> points = line.getPointsOnLine();
-                for (Point point : points) {
-                    int value = 0;
-                    if (grid.containsKey(point)) {
-                        value = grid.get(point);
-                    }
-                    grid.put(point, value + 1);
+            Line line = new Line(x1, y1, x2, y2);
+            List<Point> points = line.getPointsOnLine(isPart2);
+            for (Point point : points) {
+                int value = 0;
+                if (grid.containsKey(point)) {
+                    value = grid.get(point);
                 }
+                grid.put(point, value + 1);
             }
         }
 
@@ -46,17 +44,12 @@ public class Solution {
         }
         
         return count;
-
-    }
-
-    public int part2() {
-        return 0;
     }
 
     public static void main(String[] args) {
         Solution day05 = new Solution();
-        System.out.println(day05.part1());
-        System.out.println(day05.part2());
+        System.out.println(day05.part1or2(false));
+        System.out.println(day05.part1or2(true));
     }
 
     public class Line {
@@ -68,7 +61,7 @@ public class Solution {
             two = new Point(x2, y2);
         }
 
-        public List<Point> getPointsOnLine() {
+        public List<Point> getPointsOnLine(boolean isPart2) {
             List<Point> points = new ArrayList<Point>();
 
             //only works for horizontal and vertical lines
@@ -83,6 +76,13 @@ public class Solution {
             else if (yDis == 0) {
                 for (int i = 0; i <= xDis; i++) {
                     points.add(new Point(Math.min(one.x, two.x) + i, one.y));
+                }
+            }
+            else if (xDis == yDis && isPart2) {
+                int directionX = -( one.x - two.x ) / Math.abs( one.x - two.x );
+                int directionY = -( one.y - two.y ) / Math.abs( one.y - two.y );
+                for (int i = 0; i <= xDis; i++) {
+                    points.add(new Point(one.x + i * directionX, one.y + i * directionY));
                 }
             }
             
