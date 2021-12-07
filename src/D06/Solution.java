@@ -11,7 +11,7 @@ import Utils.Utilities;
 public class Solution {
     public long part1or2(int days) {
         List<String> input = Utilities.getInputAsStringList(this);
-        HashMap<Integer, Integer> fishHash = new HashMap<Integer, Integer>();
+        HashMap<Integer, Long> fishHash = new HashMap<Integer, Long>();
         List<Integer> initialFish = Arrays.stream(input.get(0).split(",")).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
 
         for (int fishTimer : initialFish) {
@@ -19,31 +19,33 @@ public class Solution {
                 fishHash.put(fishTimer, fishHash.get(fishTimer) + 1);
             }
             else {
-                fishHash.put(fishTimer, 1);
+                fishHash.put(fishTimer, 1l);
             }
         }
 
         for (int i = 0; i < days; i++) {
-            HashMap<Integer, Integer> oldFishHash = new HashMap<Integer,Integer>(fishHash);
+            HashMap<Integer, Long> newFishHash = new HashMap<Integer, Long>();
             for (int j = 0; j < 9; j++) {
-                if (fishHash.containsKey(j)) {
+                if (fishHash.containsKey(Integer.valueOf(j))) {
                     if (j == 0) {
-                        int seven = 0;
-                        if (oldFishHash.containsKey(7)) {
-                            seven = oldFishHash.get(7);
+                        long seven = 0;
+                        if (fishHash.containsKey(Integer.valueOf(7))) {
+                            seven = fishHash.get(Integer.valueOf(7));
                         }
-                        fishHash.put(6, oldFishHash.get(0) + seven);
+                        fishHash.put(Integer.valueOf(7), fishHash.get(Integer.valueOf(0)) + seven);
+                        newFishHash.put(Integer.valueOf(8), fishHash.get(Integer.valueOf(0)));
                     }
-                    else if (j != 6) {
-                        if (oldFishHash.containsKey(j - 1)) {
-                            fishHash.put(j, oldFishHash.get(j - 1));
+                    else {
+                        if (fishHash.containsKey(Integer.valueOf(j))) {
+                            newFishHash.put(Integer.valueOf(j - 1), fishHash.get(Integer.valueOf(j)));
                         }
                     }
                 }
             }
+            fishHash = newFishHash;
         }
         long count = 0;
-        for (int value : fishHash.values()) {
+        for (long value : fishHash.values()) {
             count += value;
         }
         return count;
