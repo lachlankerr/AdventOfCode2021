@@ -1,6 +1,5 @@
 package D08;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -210,13 +209,11 @@ public class Solution {
         }
 
         public int getResult() {
-            //List<Integer> values = new ArrayList<Integer>();
             int result = 0;
             for (int j = 0; j < outputValues.length; j++) {
                 for (int i = 0; i < decodedDigits.length; i++) {
                     if (outputValues[j].equals(decodedDigits[i])) {
                         result = 10 * result + i;
-                        //values.add(i);
                     }
                 }
             }
