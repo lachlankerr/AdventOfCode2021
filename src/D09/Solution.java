@@ -7,19 +7,23 @@ import Utils.Utilities;
 
 public class Solution {
     int[][] grid;
+    int rows;
+    int cols;
 
     public int part1() {
         List<String> input = Utilities.getInputAsStringList(this);
-        grid = new int[input.size()][input.get(0).length()];
+        rows = input.size();
+        cols = input.get(0).length();
+        grid = new int[rows][cols];
 
-        for (int i = 0; i < input.size(); i++) {
+        for (int i = 0; i < rows; i++) {
             grid[i] = Arrays.stream(input.get(i).split("(?!^)")).mapToInt(Integer::parseInt).toArray();
         }
 
         int riskLevels = 0;
 
-        for (int row = 0; row < input.size(); row++ ) {
-            for (int col = 0; col < input.get(0).length(); col++ ) {
+        for (int row = 0; row < rows; row++ ) {
+            for (int col = 0; col < cols; col++ ) {
                 if (isLowPoint(row, col)) {
                     riskLevels += grid[row][col] + 1;
                 }
@@ -30,6 +34,12 @@ public class Solution {
     }
 
     public boolean isLowPoint(int row, int col) {
+        int current = grid[row][col];
+        if (row > 0         && grid[row - 1][col] <= current ) return false; //up
+        if (row < rows - 1  && grid[row + 1][col] <= current ) return false; //down
+        if (col > 0         && grid[row][col - 1] <= current ) return false; //left
+        if (col < cols - 1  && grid[row][col + 1] <= current ) return false; //right
+
         return true;
     }
 
