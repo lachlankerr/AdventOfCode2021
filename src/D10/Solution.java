@@ -1,18 +1,19 @@
 package D10;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Stack;
 
 import Utils.Utilities;
 
 public class Solution {
+    List<Stack<String>> incompleteLineStacks = new ArrayList<Stack<String>>();
+    Map<String, String> correspondingChars = new HashMap<String, String>();
+
     public int part1() {
         List<String> input = Utilities.getInputAsStringList(this);
-        Map<String, String> correspondingChars = new HashMap<String, String>();
         correspondingChars.put("(", ")");
         correspondingChars.put("[", "]");
         correspondingChars.put("{", "}");
@@ -54,13 +55,38 @@ public class Solution {
                     }
                 }
             }
+            if (stack.size() > 0) {
+                incompleteLineStacks.add(stack);
+            }
         }
 
         return totalSyntaxError;
     }
 
     public int part2() {
-        return 0;
+        Map<String, Integer> errorScores = new HashMap<String, Integer>();
+        errorScores.put(")", 1);
+        errorScores.put("]", 2);
+        errorScores.put("}", 3);
+        errorScores.put(">", 4);
+
+        int totalScore = 0;
+
+        List<Integer> scores = new ArrayList<
+
+        for (Stack<String> stack : incompleteLineStacks) {
+            int lineScore = totalScore;
+            while (stack.size() > 0) {
+                String next = stack.pop();
+                String corr = correspondingChars.get(next);
+                lineScore *= 5;
+                lineScore += errorScores.get(corr);
+            }
+            
+            totalScore = lineScore;
+        }
+
+        return totalScore;
     }
 
     public static void main(String[] args) {
