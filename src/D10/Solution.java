@@ -1,6 +1,7 @@
 package D10;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,11 @@ import Utils.Utilities;
 public class Solution {
     List<Stack<String>> incompleteLineStacks = new ArrayList<Stack<String>>();
     Map<String, String> correspondingChars = new HashMap<String, String>();
+    Map<String, Integer> errorScores = new HashMap<String, Integer>();
 
     public int part1() {
         List<String> input = Utilities.getInputAsStringList(this);
+        
         correspondingChars.put("(", ")");
         correspondingChars.put("[", "]");
         correspondingChars.put("{", "}");
@@ -33,7 +36,6 @@ public class Solution {
         isOpening.put("}", false);
         isOpening.put(">", false);
 
-        Map<String, Integer> errorScores = new HashMap<String, Integer>();
         errorScores.put(")", 3);
         errorScores.put("]", 57);
         errorScores.put("}", 1197);
@@ -52,6 +54,8 @@ public class Solution {
                     String next = stack.pop();
                     if (!correspondingChars.get(next).equals(chars[i])) {
                         totalSyntaxError += errorScores.get(chars[i]);
+                        stack = new Stack<String>();
+                        break;
                     }
                 }
             }
@@ -63,30 +67,29 @@ public class Solution {
         return totalSyntaxError;
     }
 
-    public int part2() {
-        Map<String, Integer> errorScores = new HashMap<String, Integer>();
+    public long part2() {
         errorScores.put(")", 1);
         errorScores.put("]", 2);
         errorScores.put("}", 3);
         errorScores.put(">", 4);
 
-        int totalScore = 0;
-
-        List<Integer> scores = new ArrayList<
+        List<Long> scores = new ArrayList<Long>();
 
         for (Stack<String> stack : incompleteLineStacks) {
-            int lineScore = totalScore;
+            long lineScore = 0;
             while (stack.size() > 0) {
                 String next = stack.pop();
                 String corr = correspondingChars.get(next);
                 lineScore *= 5;
                 lineScore += errorScores.get(corr);
             }
-            
-            totalScore = lineScore;
+
+            scores.add(lineScore);
         }
 
-        return totalScore;
+        Collections.sort(scores);
+
+        return scores.get(scores.size()/2);
     }
 
     public static void main(String[] args) {
