@@ -2,7 +2,7 @@ package D01;
 
 import java.util.List;
 
-import Utils.Utilities;
+import Utils.Input;
 
 /**
  * Counts the number of times a depth measurement increases
@@ -13,7 +13,7 @@ public class Solution {
      * @return The number of times a depth measurement increases
      */
     public int part1() {
-        List<Integer> input = Utilities.getInputAsIntegerList(this);
+        List<Integer> input = Input.getAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
         int count = 0;
@@ -31,7 +31,7 @@ public class Solution {
      * @return The number of times a depth measurement increases based on a three-measurement sliding window
      */
     public int part2() {
-        List<Integer> input = Utilities.getInputAsIntegerList(this);
+        List<Integer> input = Input.getAsIntegerList(this);
 
         int previous = Integer.MAX_VALUE;
         int n = 3;
@@ -60,7 +60,7 @@ public class Solution {
      * @param n window size
      */
     public int part1or2(int n) {
-        List<Integer> input = Utilities.getInputAsIntegerList(this);
+        List<Integer> input = Input.getAsIntegerList(this);
 
         int count = 0;
 

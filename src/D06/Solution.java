@@ -1,16 +1,15 @@
 package D06;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     public long part1or2(int days) {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         HashMap<Integer, Long> fishHash = new HashMap<Integer, Long>();
         List<Integer> initialFish = Arrays.stream(input.get(0).split(",")).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
 

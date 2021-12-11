@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
-import Utils.Utilities;
+import Utils.Input;
+import Utils.Point;
 
 public class Solution {
     int[][] grid;
@@ -19,7 +19,7 @@ public class Solution {
     List<Point> lowPoints = new ArrayList<Point>();
 
     public int part1() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         rows = input.size();
         cols = input.get(0).length();
         grid = new int[rows][cols];
@@ -97,32 +97,5 @@ public class Solution {
         Solution day09 = new Solution();
         System.out.println(day09.part1());
         System.out.println(day09.part2());
-    }
-
-    public class Point {
-        public int x;
-        public int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Point point = (Point) obj;
-            return point.x == x && point.y == y;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y);
-        }
     }
 }

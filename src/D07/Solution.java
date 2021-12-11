@@ -1,16 +1,14 @@
 package D07;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     public int part1() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         int[] positions = Arrays.stream(input.get(0).split(",")).mapToInt(Integer::parseInt).toArray();
         Arrays.sort(positions);
         int median = positions[positions.length/2];
@@ -24,7 +22,7 @@ public class Solution {
     }
 
     public int part2() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         int[] positions = Arrays.stream(input.get(0).split(",")).mapToInt(Integer::parseInt).toArray();
         int sum = IntStream.of(positions).sum();
         int mean = sum / positions.length;

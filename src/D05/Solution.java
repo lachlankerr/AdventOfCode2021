@@ -1,20 +1,18 @@
 package D05;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-import Utils.Utilities;
+import Utils.Input;
+import Utils.Point;
 
 public class Solution {
 
     public int part1or2(boolean isPart2) {
         Map<Point, Integer> grid = new HashMap<Point, Integer>();
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         for (String lineString : input) {
             String[] parts = lineString.split(" -> ");
             String[] x1y1 = parts[0].split(",");
@@ -87,33 +85,6 @@ public class Solution {
             }
             
             return points;
-        }
-    }
-
-    public class Point {
-        public int x;
-        public int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Point point = (Point) obj;
-            return point.x == x && point.y == y;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y);
         }
     }
 }

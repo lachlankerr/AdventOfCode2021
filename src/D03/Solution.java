@@ -1,13 +1,11 @@
 package D03;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     public int n;
@@ -46,7 +44,7 @@ public class Solution {
     }
 
     public int part2() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         Queue<String> OGRqueue = new PriorityQueue<String>(input);
         Queue<String> OGRnewQueue = new PriorityQueue<String>();
         
@@ -90,7 +88,7 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution day3 = new Solution();
-        List<String> input = Utilities.getInputAsStringList(day3);
+        List<String> input = Input.getAsStringList(day3);
         day3.n = input.get(0).length();
         System.out.println(day3.part1(input));
         System.out.println(day3.part2());

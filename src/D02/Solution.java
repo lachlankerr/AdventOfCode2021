@@ -2,11 +2,11 @@ package D02;
 
 import java.util.List;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     public int part1() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         int horizontal = 0;
         int depth = 0;
         for (String value : input) {
@@ -22,7 +22,7 @@ public class Solution {
     }
     
     public int part2() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         int horizontal = 0;
         int depth = 0;
         int aim = 0;

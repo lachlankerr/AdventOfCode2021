@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     List<Integer> nums = new ArrayList<Integer>();
     List<Board> boards = new ArrayList<Board>();
 
     public void buildBoards() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
 
         String numbers = input.remove(0);
         nums = Arrays.asList(numbers.split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());

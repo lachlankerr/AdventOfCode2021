@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     public int part1() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
 
         int count = 0;
 
@@ -31,7 +31,7 @@ public class Solution {
 
     @SuppressWarnings("unchecked")
     public int part2() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
 
         int count = 0;
 

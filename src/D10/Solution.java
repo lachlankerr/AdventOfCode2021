@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import Utils.Utilities;
+import Utils.Input;
 
 public class Solution {
     List<Stack<String>> incompleteLineStacks = new ArrayList<Stack<String>>();
@@ -15,7 +15,7 @@ public class Solution {
     Map<String, Integer> errorScores = new HashMap<String, Integer>();
 
     public int part1() {
-        List<String> input = Utilities.getInputAsStringList(this);
+        List<String> input = Input.getAsStringList(this);
         
         correspondingChars.put("(", ")");
         correspondingChars.put("[", "]");
