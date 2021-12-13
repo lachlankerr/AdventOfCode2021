@@ -64,7 +64,8 @@ public class Solution {
             if (i == 0) {
                 int dots = 0;
                 for (boolean value : newGrid.values()) {
-                    dots++;
+                    if (value)
+                        dots++;
                 }
                 System.out.println(dots);
             }
@@ -81,7 +82,7 @@ public class Solution {
                     System.out.print(" ");
                 }
                 else {
-                    System.out.print("#");
+                    System.out.print("█");
                 }
             }
             System.out.println("");
