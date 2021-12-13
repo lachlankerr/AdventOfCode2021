@@ -1,12 +1,20 @@
 package D12;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import Utils.Input;
+import Utils.Tuple;
 
 public class Solution {
     Graph graph = new Graph();
@@ -17,18 +25,43 @@ public class Solution {
             graph.addEdge(parts[0], parts[1]);
         }
 
-        List<ArrayList<Node>> paths = new ArrayList<ArrayList<Node>>();
-
-        ArrayList<Node> currentPath = new ArrayList<Node>();
+        List<List<Node>> paths = new ArrayList<List<Node>>();
 
         Node start = graph.getNode("start");
         Node end = graph.getNode("end");
-        List<Node> neighbours = graph.getNeighbours(start);
-        if (neighbours.contains(end)) {
-            paths.add(currentPath);
+
+        Stack<Tuple<Node, List<Node>>> stack = new Stack<Tuple<Node, List<Node>>>();
+        Set<Node> discovered = new HashSet<Node>();
+        //stack.push(new Tuple<Node, List<Node>>(start, Arrays.asList(start)));
+        stack.push(new Tuple<Node, List<Node>>(start, new ArrayList<Node>()));
+        while (stack.size() > 0) {
+            Tuple<Node, List<Node>> next = stack.pop();
+            if (next.x.isBig() || !next.y.contains(next.x)) {
+            //if (!discovered.contains(next.x)) {
+                if (next.x.equals(end)) {
+                    paths.add(next.y);
+                    continue;
+                }
+                //if (!next.x.isBig() && !next.x.equals(end)) {
+                //    discovered.add(next.x);
+                //}
+                for (Node neighbour : graph.getNeighbours(next.x)) {
+                    stack.push(new Tuple<Node, List<Node>>(neighbour, Stream.concat(next.y.stream(), Arrays.asList(next.x).stream()).collect(Collectors.toList())));
+                }
+            }
         }
 
-        return 0;
+        for (List<Node> path : paths) {
+            String pathString = "";
+            for (Node node : path) {
+                pathString += node.id + ",";
+            }
+            System.out.println(pathString + "end");
+            //System.out.println(pathString.substring(0, pathString.length() - 1));
+        }
+
+
+        return paths.size();
     }
 
     public int part2() {
