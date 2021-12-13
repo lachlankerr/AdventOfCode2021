@@ -17,8 +17,16 @@ public class Solution {
             graph.addEdge(parts[0], parts[1]);
         }
 
+        List<ArrayList<Node>> paths = new ArrayList<ArrayList<Node>>();
+
+        ArrayList<Node> currentPath = new ArrayList<Node>();
+
         Node start = graph.getNode("start");
+        Node end = graph.getNode("end");
         List<Node> neighbours = graph.getNeighbours(start);
+        if (neighbours.contains(end)) {
+            paths.add(currentPath);
+        }
 
         return 0;
     }
