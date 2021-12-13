@@ -26,8 +26,8 @@ public class Grid {
         grid[p.y][p.x] = value;
     }
 
-    public void incrementValue(Point p, int value) {
-        grid[p.y][p.x] = value;
+    public void incrementValue(Point p) {
+        grid[p.y][p.x]++;
     }
 
     public List<Point> getValidNeighbours4(Point p) {
