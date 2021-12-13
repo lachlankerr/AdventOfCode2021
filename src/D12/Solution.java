@@ -96,7 +96,7 @@ public class Solution {
         HashMap<Node, Integer> counts = new HashMap<Node, Integer>();
         
         for (Node node : newPath) {
-            if (!node.isBig() && !node.id.equals("start") && !node.id.equals("end")) {
+            if (!node.isBig()) {
                 int curr = 0;
                 if (counts.containsKey(node)) {
                     curr = counts.get(node);
@@ -107,11 +107,17 @@ public class Solution {
 
         int twocounts = 0;
 
-        for (int value : counts.values()) {
-            if (value > 2) {
+        for (Map.Entry<Node, Integer> value : counts.entrySet()) {
+            if (value.getValue() > 2) {
                 return false;
             }
-            if (value > 1) {
+            if (value.getKey().id.equals("start") && value.getValue() > 1) {
+                return false;
+            }
+            if (value.getKey().id.equals("end") && value.getValue() > 1) {
+                return false;
+            }
+            if (value.getValue() > 1) {
                 twocounts++;
             }
         }
@@ -122,9 +128,6 @@ public class Solution {
     public static void main(String[] args) {
         Solution day12 = new Solution();
         System.out.println(day12.part1());
-        System.out.println(day12.part2check(Arrays.asList(day12.new Node("a")), day12.new Node("a")));
-        System.out.println(day12.part2check(Arrays.asList(day12.new Node("a"), day12.new Node("a")), day12.new Node("a")));
-        System.out.println(day12.part2check(Arrays.asList(day12.new Node("a"), day12.new Node("b"), day12.new Node("b")), day12.new Node("a")));
         System.out.println(day12.part2());
     }
 
