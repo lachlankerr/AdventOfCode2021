@@ -62,12 +62,7 @@ public class Solution {
             grid = newGrid;
 
             if (i == 0) {
-                int dots = 0;
-                for (boolean value : newGrid.values()) {
-                    if (value)
-                        dots++;
-                }
-                System.out.println(dots);
+                System.out.println(newGrid.values().size());
             }
         }
 
