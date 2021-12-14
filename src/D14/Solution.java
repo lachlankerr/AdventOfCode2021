@@ -26,10 +26,7 @@ public class Solution {
         var map = new HashMap<Pair, Long>();
         for (int i = 0; i < polymerTemplate.length() - 1; i++) {
             var pair = new Pair(polymerTemplate.substring(i, i + 2));
-            long count = 0;
-            if (map.containsKey(pair)) {
-                count = map.get(pair);
-            }
+            long count = map.getOrDefault(pair, 0l);
             map.put(pair, count + 1);
         }
 
@@ -61,8 +58,8 @@ public class Solution {
         long smallest = Long.MAX_VALUE;
         long largest = 0;
         for (var count : freqMap.values()) {
-            if (count % 2 == 1)     count = (count + 1) / 2;
-            else                    count = count / 2;
+            if (count % 2 == 1)     count++;
+            count /= 2;
             if (count > largest)    largest = count;
             if (count < smallest)   smallest = count;
         }
