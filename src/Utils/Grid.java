@@ -69,4 +69,17 @@ public class Grid {
 
         return points;
     }
+
+    public List<Point> getAllPoints() {
+        List<Point> points = new ArrayList<Point>();
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                points.add(new Point(col, row));
+            }
+        }
+
+        return points;
+
+    }
 }
