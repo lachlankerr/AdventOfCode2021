@@ -1,6 +1,7 @@
 package Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Grid {
@@ -14,8 +15,25 @@ public class Grid {
         grid = new int[rows][cols];
     }
 
+    public Grid(List<String> rows) {
+        this.rows = rows.size();
+        this.cols = rows.get(0).length();
+        grid = new int[this.rows][this.cols];
+        setGrid(rows);
+    }
+
     public void setRow(int index, int[] row) {
         grid[index] = row;
+    }
+
+    public void setRow(int index, String row) {
+        setRow(index, Arrays.stream(row.split("(?!^)")).mapToInt(Integer::parseInt).toArray());
+    }
+
+    public void setGrid(List<String> rows) {
+        for (int i = 0; i < rows.size(); i++) {
+            setRow(i, rows.get(i));
+        }
     }
 
     public int getValue(Point p) {
