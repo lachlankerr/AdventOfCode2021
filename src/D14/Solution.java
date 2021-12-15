@@ -11,12 +11,12 @@ public class Solution {
         var input = Input.getAsStringList(this);
 
         // get our polymer template
-        String polymerTemplate = input.remove(0);
+        var polymerTemplate = input.remove(0);
         input.remove(0); //remove newline
 
         // construct insertion pairs from input
         var pairInsertions = new ArrayList<PairInsertion>();
-        for (String line : input) {
+        for (var line : input) {
             var parts = line.split(" -> ");
             var pairInsertion = new PairInsertion(parts[0], parts[1]);
             pairInsertions.add(pairInsertion);
@@ -26,7 +26,7 @@ public class Solution {
         var map = new HashMap<Pair, Long>();
         for (int i = 0; i < polymerTemplate.length() - 1; i++) {
             var pair = new Pair(polymerTemplate.substring(i, i + 2));
-            long count = map.getOrDefault(pair, 0l);
+            var count = map.getOrDefault(pair, 0l);
             map.put(pair, count + 1);
         }
 
@@ -55,8 +55,8 @@ public class Solution {
         }
 
         // adjust frequencies due to pairs
-        long smallest = Long.MAX_VALUE;
-        long largest = 0;
+        var smallest = Long.MAX_VALUE;
+        var largest = 0l;
         for (var count : freqMap.values()) {
             if (count % 2 == 1)     count++;
             count /= 2;
@@ -68,7 +68,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        Solution day14 = new Solution();
+        var day14 = new Solution();
         System.out.println(day14.part1or2(10));
         System.out.println(day14.part1or2(40));
     }
