@@ -38,5 +38,9 @@ public class Input {
     public static List<Integer> getAsIntegerList(Object obj) {
         return getAsStringList(obj).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
     }
+
+    public static Grid getAsGrid(Object obj) {
+        return new Grid(getAsStringList(obj));
+    }
 }
 
