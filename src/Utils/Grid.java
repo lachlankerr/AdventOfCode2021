@@ -82,4 +82,19 @@ public class Grid {
         return points;
 
     }
+
+    public void extendGrid(int time) {
+        int oldRows = rows;
+        int oldCols = cols;
+        rows *= time;
+        cols *= time;
+        var newGrid = new int[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                newGrid[row][col] = grid[row % oldRows][col % oldCols] + (row / oldRows) + (col / oldCols);
+                newGrid[row][col] = newGrid[row][col] % 9 == 0 ? 9 : newGrid[row][col] % 9;
+            }
+        }
+        grid = newGrid;
+    }
 }

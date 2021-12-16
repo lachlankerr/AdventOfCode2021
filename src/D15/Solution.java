@@ -26,6 +26,15 @@ public class Solution {
         dijkstra(grid, source);
         return getLengthOfPath(grid, target, source);
     }
+    
+    public int part2() {
+        var grid = Input.getAsGrid(this);
+        grid.extendGrid(5);
+        var source = new Point(0, 0);
+        var target = new Point(grid.cols - 1, grid.rows - 1);
+        dijkstra(grid, source);
+        return getLengthOfPath(grid, target, source);
+    }
 
     public int getLengthOfPath(Grid grid, Point target, Point source) {
         var path = new Stack<Point>();
@@ -72,10 +81,6 @@ public class Solution {
                 }
             }
         }
-    }
-    
-    public int part2() {
-        return 0;
     }
 
     public static void main(String[] args) {
