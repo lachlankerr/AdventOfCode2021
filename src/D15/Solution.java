@@ -1,45 +1,46 @@
 package D15;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Stack;
 
 import Utils.Benchmark;
 import Utils.Grid;
 import Utils.Input;
 import Utils.Point;
-import Utils.Tuple;
 
 public class Solution {
     HashMap<Point, Integer> dist = new HashMap<Point, Integer>(); //dist.getOrDefault(key, Integer.MAX_VALUE);
     HashMap<Point, Point> prev = new HashMap<Point, Point>();
     HashMap<Point, Point> cameFrom = new HashMap<Point, Point>();
 
-    public int part1() {
+    public int part1(Algorithm algo) {
         var grid = Input.getAsGrid(this);
         var source = new Point(0, 0);
         var target = new Point(grid.cols - 1, grid.rows - 1);
-        //dijkstra(grid, source, target);
-        //return getLengthOfPathDijkstra(grid, source, target);
-        astar(grid, source, target);
-        return getLengthOfPathAstart(grid, source, target);
+        if (algo == Algorithm.Astar) {
+            astar(grid, source, target);
+            return getLengthOfPathAstart(grid, source, target);
+        }
+        else {
+            dijkstra(grid, source, target);
+            return getLengthOfPathDijkstra(grid, source, target);
+        }
     }
     
-    public int part2() {
+    public int part2(Algorithm algo) {
         var grid = Input.getAsGrid(this);
         grid.extendGrid(5);
         var source = new Point(0, 0);
         var target = new Point(grid.cols - 1, grid.rows - 1);
-        //dijkstra(grid, source, target);
-        //return getLengthOfPathDijkstra(grid, source, target);
-        astar(grid, source, target);
-        return getLengthOfPathAstart(grid, source, target);
+        if (algo == Algorithm.Astar) {
+            astar(grid, source, target);
+            return getLengthOfPathAstart(grid, source, target);
+        }
+        else {
+            dijkstra(grid, source, target);
+            return getLengthOfPathDijkstra(grid, source, target);
+        }
     }
 
     public int getLengthOfPathDijkstra(Grid grid, Point source, Point target) {
@@ -152,15 +153,18 @@ public class Solution {
         }
     }
 
+    public enum Algorithm {
+        Astar,
+        Dijkstra
+    }
+
     public static void main(String[] args) {
         var day15 = new Solution();
-        System.out.println(day15.part1());
-        //long startTime = System.currentTimeMillis();
-        //Benchmark.Run(() -> day15.part2);
-        var lasd = new ArrayList<Integer>();
-        lasd.forEach(action);
-        System.out.println(day15.part2());
-        //long endTime = System.currentTimeMillis();
-        //System.out.println("Duration: " + (endTime - startTime) / 1000 + " seconds"); 
+        System.out.println("Astar");
+        Benchmark.Run(() -> day15.part1(Algorithm.Astar));
+        Benchmark.Run(() -> day15.part2(Algorithm.Astar));
+        System.out.println("Dijkstra");
+        Benchmark.Run(() -> day15.part1(Algorithm.Dijkstra));
+        Benchmark.Run(() -> day15.part2(Algorithm.Dijkstra));
     }
 }
