@@ -18,13 +18,16 @@ import Utils.Tuple;
 public class Solution {
     HashMap<Point, Integer> dist = new HashMap<Point, Integer>(); //dist.getOrDefault(key, Integer.MAX_VALUE);
     HashMap<Point, Point> prev = new HashMap<Point, Point>();
+    HashMap<Point, Point> cameFrom = new HashMap<Point, Point>();
 
     public int part1() {
         var grid = Input.getAsGrid(this);
         var source = new Point(0, 0);
         var target = new Point(grid.cols - 1, grid.rows - 1);
-        dijkstra(grid, source);
-        return getLengthOfPath(grid, target, source);
+        //dijkstra(grid, source, target);
+        //return getLengthOfPathDijkstra(grid, source, target);
+        astar(grid, source, target);
+        return getLengthOfPathAstart(grid, source, target);
     }
     
     public int part2() {
@@ -32,11 +35,13 @@ public class Solution {
         grid.extendGrid(5);
         var source = new Point(0, 0);
         var target = new Point(grid.cols - 1, grid.rows - 1);
-        dijkstra(grid, source);
-        return getLengthOfPath(grid, target, source);
+        //dijkstra(grid, source, target);
+        //return getLengthOfPathDijkstra(grid, source, target);
+        astar(grid, source, target);
+        return getLengthOfPathAstart(grid, source, target);
     }
 
-    public int getLengthOfPath(Grid grid, Point target, Point source) {
+    public int getLengthOfPathDijkstra(Grid grid, Point source, Point target) {
         var path = new Stack<Point>();
         var u = target;
         while (u != null) {
@@ -54,7 +59,7 @@ public class Solution {
         return cost;
     }
 
-    public void dijkstra(Grid grid, Point source) {
+    public void dijkstra(Grid grid, Point source, Point target) {
         var queue = new HashSet<Point>();
         queue.addAll(grid.getAllPoints());
         dist.put(source, 0);
@@ -69,6 +74,9 @@ public class Solution {
                     uDist = pDist;
                 }
             }
+            if (u == target) {
+                return;
+            }
             queue.remove(u);
 
             for (var v : grid.getValidNeighbours4(u)) {
@@ -77,6 +85,66 @@ public class Solution {
                     if (alt < dist.getOrDefault(v, Integer.MAX_VALUE)) {
                         dist.put(v, alt);
                         prev.put(v, u);
+                    }
+                }
+            }
+        }
+    }
+
+    public int h(Point n, Point goal) {
+        return Math.abs(n.x - goal.x) + Math.abs(n.y - goal.y);
+    }
+
+    public int getLengthOfPathAstart(Grid grid, Point start, Point goal) {
+        var path = new Stack<Point>();
+        var u = goal;
+        while (u != null) {
+            path.push(u);
+            u = cameFrom.get(u);
+        }
+
+        var cost = 0;
+        for (var next : path) {
+            if (!next.equals(start)) { //first one isn't counted because we are already there
+                cost += grid.grid[next.y][next.x];
+            }
+        }
+
+        return cost;
+    }
+
+    public void astar(Grid grid, Point start, Point goal) {
+        var openSet = new HashSet<Point>();
+        openSet.add(start);
+        cameFrom = new HashMap<Point, Point>();
+        var gScore = new HashMap<Point, Integer>(); //gScore.getOrDefault(key, Integer.MAX_VALUE);
+        gScore.put(start, 0);
+        var fScore = new HashMap<Point, Integer>(); //fScore.getOrDefault(key, Integer.MAX_VALUE);
+        fScore.put(start, h(start, goal)); //fScore[n] := gScore[n] + h(n)
+
+        while (!openSet.isEmpty()) {
+            Point current = null;
+            int currentF = Integer.MAX_VALUE;
+            for (var point : openSet) {
+                var pointF = fScore.getOrDefault(point, Integer.MAX_VALUE);
+                if (pointF < currentF) {
+                    current = point;
+                    currentF = pointF;
+                }
+            }
+            if (current == goal) {
+                return;
+            }
+            openSet.remove(current);
+
+            for (var neighbor : grid.getValidNeighbours4(current)) {
+                int tentative_gScore = gScore.getOrDefault(current, Integer.MAX_VALUE) + grid.grid[neighbor.y][neighbor.x];
+                if (tentative_gScore < gScore.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                    cameFrom.put(neighbor, current);
+                    gScore.put(neighbor, tentative_gScore);
+                    fScore.put(neighbor, tentative_gScore + h(neighbor, goal));
+                    if (!openSet.contains(neighbor)) {
+                        openSet.add(neighbor);
                     }
                 }
             }
