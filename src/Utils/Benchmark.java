@@ -30,10 +30,10 @@ public class Benchmark {
 
         var duration = "";
         if (elapsedHours > 0) {
-            duration = elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds + "." + elapsedMilliseconds;
+            duration = elapsedHours + ":" + String.format("%02d", elapsedMinutes) + ":" + String.format("%02d", elapsedSeconds) + "." + elapsedMilliseconds;
         }
         else if (elapsedMinutes > 0) {
-            duration = elapsedMinutes + ":" + elapsedSeconds + "." + elapsedMilliseconds;
+            duration = elapsedMinutes + ":" + String.format("%02d", elapsedSeconds) + "." + elapsedMilliseconds;
         }
         else if (elapsedSeconds > 0) {
             duration = elapsedSeconds + "." + elapsedMilliseconds;
