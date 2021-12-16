@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
+import Utils.Benchmark;
 import Utils.Grid;
 import Utils.Input;
 import Utils.Point;
@@ -154,6 +155,12 @@ public class Solution {
     public static void main(String[] args) {
         var day15 = new Solution();
         System.out.println(day15.part1());
+        //long startTime = System.currentTimeMillis();
+        //Benchmark.Run(() -> day15.part2);
+        var lasd = new ArrayList<Integer>();
+        lasd.forEach(action);
         System.out.println(day15.part2());
+        //long endTime = System.currentTimeMillis();
+        //System.out.println("Duration: " + (endTime - startTime) / 1000 + " seconds"); 
     }
 }
