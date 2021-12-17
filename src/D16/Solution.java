@@ -1,5 +1,6 @@
 package D16;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,32 +22,54 @@ public class Solution {
 
     public void processPacket(String binary) {
         int i = 0;
-        Packet packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
-        if (packet.type == Type.Literal) { 
-            String literalBinary = "";
-            boolean keepGoing = true;
-            while (keepGoing) {
-                if (Integer.parseInt(binary, i, i += 1, 2) == 0) {
-                    keepGoing = false;
-                }
-                literalBinary += binary.substring(i, i += 4);
+        while (i != binary.length()) {
+            if (new BigInteger(binary.substring(i, binary.length() - i), 2).signum() == 0) {
+            //if (Long.parseLong(binary, i, binary.length() - i, 2) == 0) { // only zeros mean its not a packet
+                break;
             }
-            packet.data = Integer.parseInt(literalBinary, 2);
-        }
-        else {
-            int lengthType = Integer.parseInt(binary, i, i += 1, 2);
-            if (lengthType == 0) {
-                int lengthBits = 15;
-                int totalLength = Integer.parseInt(binary, i, i += lengthBits, 2);
-                String subPackets = binary.substring(i, i += totalLength);
-                // processPacket(subPackets)
-                if (i == binary.length()) {
+            Packet packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
+            if (packet.type == Type.Literal) { 
+                String literalBinary = "";
+                boolean keepGoing = true;
+                while (keepGoing) {
+                    if (Integer.parseInt(binary, i, i += 1, 2) == 0) {
+                        keepGoing = false;
+                    }
+                    literalBinary += binary.substring(i, i += 4);
+                }
+                packet.data = Integer.parseInt(literalBinary, 2);
+            }
+            else {
+                int lengthType = Integer.parseInt(binary, i, i += 1, 2);
+                if (lengthType == 0) {
+                    int lengthBits = 15;
+                    int totalLength = Integer.parseInt(binary, i, i += lengthBits, 2);
+                    String subPackets = binary.substring(i, i += totalLength);
+                    processPacket(subPackets);
+                }
+                else {
+                    int lengthBits = 15;
+                    int numSubPackets = Integer.parseInt(binary, i, i += lengthBits, 2); //what is the point of this
+                    String subPackets = binary.substring(i, binary.length() - 1);
+                    i = binary.length();
 
+                    processPacket(subPackets);
                 }
             }
+            packets.add(packet);
         }
-        packets.add(packet);
     }
+
+    /*public int processSinglePacket(String binary) {
+        return 0;
+    }
+
+    public void processNPackets(String binary, int n) {
+        int i = 0;
+        for (int j = 0; j < n; j++) {
+            i = processSinglePacket(binary.substring(i));
+        }
+    }*/
 
     public String convertToBinaryString(String line) {
         var hexToBinary = new HashMap<Character, String>();
@@ -90,6 +113,7 @@ public class Solution {
         public int version;
         public Type type;
         public int data;
+        public List<Packet> subpackets = new ArrayList<Packet>();
 
         public Packet(int version, int type) {
             this.version = version;
