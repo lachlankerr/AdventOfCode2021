@@ -1,6 +1,5 @@
 package D16;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -105,17 +104,17 @@ public class Solution {
         return binaryLine;
     }
 
-    public List<BigInteger> getValueSum(List<Packet> packets) {
-        var parts = new ArrayList<BigInteger>();
+    public List<Long> getValueSum(List<Packet> packets) {
+        var parts = new ArrayList<Long>();
         for (Packet packet : packets) {
             switch (packet.type) {
                 case Sum: 
                     var sumParts = getValueSum(packet.subpackets);
-                    parts.add(sumParts.stream().reduce(BigInteger.valueOf(0), (a, b) -> a.add(b)));
+                    parts.add(sumParts.stream().reduce(0l, (a, b) -> a + b));
                     break;
                 case Product: 
                     var productParts = getValueSum(packet.subpackets);
-                    parts.add(productParts.stream().reduce(BigInteger.valueOf(1), (a, b) -> a.multiply(b)));
+                    parts.add(productParts.stream().reduce(1l, (a, b) -> a * b));
                     break;
                 case Minimum: 
                     var minimumParts = getValueSum(packet.subpackets);
@@ -126,33 +125,33 @@ public class Solution {
                     parts.add(Collections.max(maximumParts));
                     break;
                 case Literal: 
-                    parts.add(BigInteger.valueOf(packet.data));
+                    parts.add(packet.data);
                     break;
                 case GreaterThan: 
                     var greaterThanParts = getValueSum(packet.subpackets);
                     if (greaterThanParts.get(0).compareTo(greaterThanParts.get(1)) == 1) {
-                        parts.add(BigInteger.valueOf(1));
+                        parts.add(1l);
                     }
                     else {
-                        parts.add(BigInteger.valueOf(0));
+                        parts.add(0l);
                     }
                     break;
                 case LessThan: 
                     var lessThanParts = getValueSum(packet.subpackets);
                     if (lessThanParts.get(0).compareTo(lessThanParts.get(1)) == -1) {
-                        parts.add(BigInteger.valueOf(1));
+                        parts.add(1l);
                     }
                     else {
-                        parts.add(BigInteger.valueOf(0));
+                        parts.add(0l);
                     }
                     break;
                 case EqualTo: 
                     var equalParts = getValueSum(packet.subpackets);
                     if (equalParts.get(0).compareTo(equalParts.get(1)) == 0) {
-                        parts.add(BigInteger.valueOf(1));
+                        parts.add(1l);
                     }
                     else {
-                        parts.add(BigInteger.valueOf(0));
+                        parts.add(0l);
                     }
                     break;
             }
@@ -160,7 +159,7 @@ public class Solution {
         return parts;
     }
     
-    public BigInteger part2() {
+    public long part2() {
         var input = Input.getAsStringList(this);
         var binary = convertToBinaryString(input.get(0));
         var packets = processPacket(binary, Integer.MAX_VALUE);
