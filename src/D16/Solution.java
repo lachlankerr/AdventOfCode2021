@@ -9,22 +9,26 @@ import Utils.Benchmark;
 import Utils.Input;
 
 public class Solution {
-    List<Packet> packets = new ArrayList<Packet>();
-    
     public int part1() {
         var input = Input.getAsStringList(this);
         var binary = convertToBinaryString(input.get(0));
-        processPacket(binary);
-        
-
-        return 0;
+        var packets = processPacket(binary, Integer.MAX_VALUE);
+        return getVersionSum(packets);
     }
 
-    public void processPacket(String binary) {
+    public int getVersionSum(List<Packet> packets) {
+        int sum = 0;
+        for (Packet packet : packets) {
+            sum += packet.version + getVersionSum(packet.subpackets);
+        }
+        return sum;
+    }
+
+    public List<Packet> processPacket(String binary, int numPackets) {
+        var packets = new ArrayList<Packet>();
         int i = 0;
-        while (i != binary.length()) {
-            if (new BigInteger(binary.substring(i, binary.length() - i), 2).signum() == 0) {
-            //if (Long.parseLong(binary, i, binary.length() - i, 2) == 0) { // only zeros mean its not a packet
+        while (i != binary.length() && numPackets > 0) {
+            if (binary.length() - i < 11) { // smallest valid packet size is a literal with length 11
                 break;
             }
             Packet packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
@@ -37,7 +41,7 @@ public class Solution {
                     }
                     literalBinary += binary.substring(i, i += 4);
                 }
-                packet.data = Integer.parseInt(literalBinary, 2);
+                packet.data = Long.parseLong(literalBinary, 2);
             }
             else {
                 int lengthType = Integer.parseInt(binary, i, i += 1, 2);
@@ -45,31 +49,22 @@ public class Solution {
                     int lengthBits = 15;
                     int totalLength = Integer.parseInt(binary, i, i += lengthBits, 2);
                     String subPackets = binary.substring(i, i += totalLength);
-                    processPacket(subPackets);
+                    packet.subpackets = processPacket(subPackets, Integer.MAX_VALUE);
                 }
                 else {
-                    int lengthBits = 15;
+                    int lengthBits = 11;
                     int numSubPackets = Integer.parseInt(binary, i, i += lengthBits, 2); //what is the point of this
-                    String subPackets = binary.substring(i, binary.length() - 1);
+                    String subPackets = binary.substring(i, binary.length());
                     i = binary.length();
 
-                    processPacket(subPackets);
+                    packet.subpackets = processPacket(subPackets, numSubPackets);
                 }
             }
             packets.add(packet);
+            numPackets--;
         }
+        return packets;
     }
-
-    /*public int processSinglePacket(String binary) {
-        return 0;
-    }
-
-    public void processNPackets(String binary, int n) {
-        int i = 0;
-        for (int j = 0; j < n; j++) {
-            i = processSinglePacket(binary.substring(i));
-        }
-    }*/
 
     public String convertToBinaryString(String line) {
         var hexToBinary = new HashMap<Character, String>();
@@ -112,7 +107,7 @@ public class Solution {
     public class Packet {
         public int version;
         public Type type;
-        public int data;
+        public long data;
         public List<Packet> subpackets = new ArrayList<Packet>();
 
         public Packet(int version, int type) {
@@ -122,8 +117,6 @@ public class Solution {
                 default: this.type = Type.Operator; break;
             }
         }
-
-        
     }
 
     public enum Type {
