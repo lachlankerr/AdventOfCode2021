@@ -59,9 +59,6 @@ public class Solution {
                     if (numPacketsReachedI != -1) {
                         i += numPacketsReachedI; 
                     }
-                    //else {
-                    //    i = binary.length();
-                    //}
                 }
             }
             packets.add(packet);
@@ -70,9 +67,6 @@ public class Solution {
         if (numPackets == 0) {
             numPacketsReachedI = i;
         }
-        //else {
-        //    numPacketsReachedI = -1;
-        //}
         return packets;
     }
 
