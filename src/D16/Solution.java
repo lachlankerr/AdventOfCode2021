@@ -1,22 +1,37 @@
 package D16;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import Utils.Benchmark;
 import Utils.Input;
 
 public class Solution {
+    List<Packet> packets = new ArrayList<Packet>();
+    
     public int part1() {
         var input = Input.getAsStringList(this);
         var binary = convertToBinaryString(input.get(0));
+        processPacket(binary);
+        
+
+        return 0;
+    }
+
+    public void processPacket(String binary) {
         int i = 0;
-        int version = Integer.parseInt(binary, i, i += 3, 2);
-        int type = Integer.parseInt(binary, i, i += 3, 2);
-        if (type == 4) { //literal
-            // split into chunks of 5 bits
-            // first bit of chunk is 1 if there are more chunks afterwards, 0 if none
-            // any leftover bits is extra and should be ignored
-            // for the remaining 4 bits in each chunk, create new String literalBinary and concat onto that, then convert to decimal
+        Packet packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
+        if (packet.type == Type.Literal) { 
+            String literalBinary = "";
+            boolean keepGoing = true;
+            while (keepGoing) {
+                if (Integer.parseInt(binary, i, i += 1, 2) == 0) {
+                    keepGoing = false;
+                }
+                literalBinary += binary.substring(i, i += 4);
+            }
+            packet.data = Integer.parseInt(literalBinary, 2);
         }
         else {
             int lengthType = Integer.parseInt(binary, i, i += 1, 2);
@@ -30,9 +45,7 @@ public class Solution {
                 }
             }
         }
-        
-
-        return 0;
+        packets.add(packet);
     }
 
     public String convertToBinaryString(String line) {
@@ -71,5 +84,36 @@ public class Solution {
         var day16 = new Solution();
         Benchmark.Run(() -> day16.part1());
         Benchmark.Run(() -> day16.part2());
+    }
+
+    public class Packet {
+        public int version;
+        public Type type;
+        public int data;
+
+        public Packet(int version, int type) {
+            this.version = version;
+            switch (type) {
+                case 4: this.type = Type.Literal; break;
+                default: this.type = Type.Operator; break;
+            }
+        }
+
+        
+    }
+
+    public enum Type {
+        Literal(4),
+        Operator(-1);
+
+        private int value;    
+
+        private Type(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }
