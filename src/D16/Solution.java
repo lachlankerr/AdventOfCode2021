@@ -2,6 +2,7 @@ package D16;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class Solution {
         }
         return sum;
     }
+    
+    int numPacketsReachedI = -1;
 
     public List<Packet> processPacket(String binary, int numPackets) {
         var packets = new ArrayList<Packet>();
@@ -46,23 +49,31 @@ public class Solution {
             else {
                 int lengthType = Integer.parseInt(binary, i, i += 1, 2);
                 if (lengthType == 0) {
-                    int lengthBits = 15;
-                    int totalLength = Integer.parseInt(binary, i, i += lengthBits, 2);
+                    int totalLength = Integer.parseInt(binary, i, i += 15, 2);
                     String subPackets = binary.substring(i, i += totalLength);
                     packet.subpackets = processPacket(subPackets, Integer.MAX_VALUE);
                 }
                 else {
-                    int lengthBits = 11;
-                    int numSubPackets = Integer.parseInt(binary, i, i += lengthBits, 2); //what is the point of this
+                    int numSubPackets = Integer.parseInt(binary, i, i += 11, 2);
                     String subPackets = binary.substring(i, binary.length());
-                    i = binary.length();
-
                     packet.subpackets = processPacket(subPackets, numSubPackets);
+                    if (numPacketsReachedI != -1) {
+                        i += numPacketsReachedI; 
+                    }
+                    //else {
+                    //    i = binary.length();
+                    //}
                 }
             }
             packets.add(packet);
             numPackets--;
         }
+        if (numPackets == 0) {
+            numPacketsReachedI = i;
+        }
+        //else {
+        //    numPacketsReachedI = -1;
+        //}
         return packets;
     }
 
@@ -93,9 +104,67 @@ public class Solution {
 
         return binaryLine;
     }
+
+    public List<BigInteger> getValueSum(List<Packet> packets) {
+        var parts = new ArrayList<BigInteger>();
+        for (Packet packet : packets) {
+            switch (packet.type) {
+                case Sum: 
+                    var sumParts = getValueSum(packet.subpackets);
+                    parts.add(sumParts.stream().reduce(BigInteger.valueOf(0), (a, b) -> a.add(b)));
+                    break;
+                case Product: 
+                    var productParts = getValueSum(packet.subpackets);
+                    parts.add(productParts.stream().reduce(BigInteger.valueOf(1), (a, b) -> a.multiply(b)));
+                    break;
+                case Minimum: 
+                    var minimumParts = getValueSum(packet.subpackets);
+                    parts.add(Collections.min(minimumParts));
+                    break;
+                case Maximum: 
+                    var maximumParts = getValueSum(packet.subpackets);
+                    parts.add(Collections.max(maximumParts));
+                    break;
+                case Literal: 
+                    parts.add(BigInteger.valueOf(packet.data));
+                    break;
+                case GreaterThan: 
+                    var greaterThanParts = getValueSum(packet.subpackets);
+                    if (greaterThanParts.get(0).compareTo(greaterThanParts.get(1)) == 1) {
+                        parts.add(BigInteger.valueOf(1));
+                    }
+                    else {
+                        parts.add(BigInteger.valueOf(0));
+                    }
+                    break;
+                case LessThan: 
+                    var lessThanParts = getValueSum(packet.subpackets);
+                    if (lessThanParts.get(0).compareTo(lessThanParts.get(1)) == -1) {
+                        parts.add(BigInteger.valueOf(1));
+                    }
+                    else {
+                        parts.add(BigInteger.valueOf(0));
+                    }
+                    break;
+                case EqualTo: 
+                    var equalParts = getValueSum(packet.subpackets);
+                    if (equalParts.get(0).compareTo(equalParts.get(1)) == 0) {
+                        parts.add(BigInteger.valueOf(1));
+                    }
+                    else {
+                        parts.add(BigInteger.valueOf(0));
+                    }
+                    break;
+            }
+        }
+        return parts;
+    }
     
-    public int part2() {
-        return 0;
+    public BigInteger part2() {
+        var input = Input.getAsStringList(this);
+        var binary = convertToBinaryString(input.get(0));
+        var packets = processPacket(binary, Integer.MAX_VALUE);
+        return getValueSum(packets).get(0); // 5390807764608 too low
     }
 
     public static void main(String[] args) {
@@ -113,24 +182,26 @@ public class Solution {
         public Packet(int version, int type) {
             this.version = version;
             switch (type) {
-                case 4: this.type = Type.Literal; break;
-                default: this.type = Type.Operator; break;
+                case 0: this.type = Type.Sum;           break;
+                case 1: this.type = Type.Product;       break;
+                case 2: this.type = Type.Minimum;       break;
+                case 3: this.type = Type.Maximum;       break;
+                case 4: this.type = Type.Literal;       break;
+                case 5: this.type = Type.GreaterThan;   break;
+                case 6: this.type = Type.LessThan;      break;
+                case 7: this.type = Type.EqualTo;       break;
             }
         }
     }
 
     public enum Type {
-        Literal(4),
-        Operator(-1);
-
-        private int value;    
-
-        private Type(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
+        Sum,
+        Product,
+        Minimum,
+        Maximum,
+        Literal,
+        GreaterThan,
+        LessThan,
+        EqualTo
     }
 }
