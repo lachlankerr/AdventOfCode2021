@@ -17,8 +17,8 @@ public class Solution {
 
         int bestY = 0;
 
-        for (int x = 0; x < 1000; x++) {
-            for (int y = 0; y < 1000; y++) {
+        for (int x = 0; x < 200; x++) { //not sure how to bound these ones, brute force works well enough
+            for (int y = 0; y < 200; y++) {
                 Point point = new Point(x, y);
                 if (velocityHitsTarget(bottomLeft, topRight, point) && highestY > bestY) {
                     bestY = highestY;
@@ -27,6 +27,9 @@ public class Solution {
         }
 
         return bestY;
+        //math way from reddit, uses triangle numbers
+        //int n = Math.abs(bottomLeft.y) - 1;
+        //return n * (n + 1) / 2;
     }
 
     int highestY;
@@ -59,8 +62,8 @@ public class Solution {
 
         var points = new ArrayList<Point>();
 
-        for (int x = 0; x <= topRight.x; x++) {
-            for (int y = bottomLeft.y; y < Math.abs(bottomLeft.y); y++) {
+        for (int x = 0; x <= topRight.x; x++) { //x must be positive otherwise we fire in wrong direction, x must also be less than the far edge of the target area otherwise we will overshoot
+            for (int y = bottomLeft.y; y < Math.abs(bottomLeft.y); y++) { // if y is lower than the bottom edge than we will always miss it, unsure how to limit the upper y bound
                 Point point = new Point(x, y);
                 if (velocityHitsTarget(bottomLeft, topRight, point)) {
                     points.add(point);
