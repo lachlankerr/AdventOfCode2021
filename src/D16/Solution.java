@@ -17,8 +17,8 @@ public class Solution {
     }
 
     public int getVersionSum(List<Packet> packets) {
-        int sum = 0;
-        for (Packet packet : packets) {
+        var sum = 0;
+        for (var packet : packets) {
             sum += packet.version + getVersionSum(packet.subpackets);
         }
         return sum;
@@ -28,15 +28,15 @@ public class Solution {
 
     public List<Packet> processPacket(String binary, int numPackets) {
         var packets = new ArrayList<Packet>();
-        int i = 0;
+        var i = 0;
         while (i != binary.length() && numPackets > 0) {
             if (binary.length() - i < 11) { // smallest valid packet size is a literal with length 11
                 break;
             }
-            Packet packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
+            var packet = new Packet(Integer.parseInt(binary, i, i += 3, 2), Integer.parseInt(binary, i, i += 3, 2));
             if (packet.type == Type.Literal) { 
-                String literalBinary = "";
-                boolean keepGoing = true;
+                var literalBinary = "";
+                var keepGoing = true;
                 while (keepGoing) {
                     if (Integer.parseInt(binary, i, i += 1, 2) == 0) {
                         keepGoing = false;
@@ -46,15 +46,15 @@ public class Solution {
                 packet.data = Long.parseLong(literalBinary, 2);
             }
             else {
-                int lengthType = Integer.parseInt(binary, i, i += 1, 2);
+                var lengthType = Integer.parseInt(binary, i, i += 1, 2);
                 if (lengthType == 0) {
-                    int totalLength = Integer.parseInt(binary, i, i += 15, 2);
-                    String subPackets = binary.substring(i, i += totalLength);
+                    var totalLength = Integer.parseInt(binary, i, i += 15, 2);
+                    var subPackets = binary.substring(i, i += totalLength);
                     packet.subpackets = processPacket(subPackets, Integer.MAX_VALUE);
                 }
                 else {
-                    int numSubPackets = Integer.parseInt(binary, i, i += 11, 2);
-                    String subPackets = binary.substring(i, binary.length());
+                    var numSubPackets = Integer.parseInt(binary, i, i += 11, 2);
+                    var subPackets = binary.substring(i, binary.length());
                     packet.subpackets = processPacket(subPackets, numSubPackets);
                     if (numPacketsReachedI != -1) {
                         i += numPacketsReachedI; 
@@ -100,7 +100,7 @@ public class Solution {
 
     public List<Long> getValueSum(List<Packet> packets) {
         var parts = new ArrayList<Long>();
-        for (Packet packet : packets) {
+        for (var packet : packets) {
             switch (packet.type) {
                 case Sum: 
                     var sumParts = getValueSum(packet.subpackets);
