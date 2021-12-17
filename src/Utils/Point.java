@@ -12,15 +12,26 @@ public class Point {
     }
 
     /**
-     * @param bottomleft The bottom left point of the boundary.
+     * @param bottomLeft The bottom left point of the boundary.
      * @param topRight The top right point of the bounday.
      * @param point The point to check for.
      * @return Whether or not point resides within the boundary created by topLeft and bottomRight.
      */
-    public static boolean within(Point bottomleft, Point topRight, Point point) {
-        boolean x = point.x >= bottomleft.x && point.x <= topRight.x;
-        boolean y = point.y >= bottomleft.y && point.y <= topRight.y;
+    public static boolean within(Point bottomLeft, Point topRight, Point point) {
+        boolean x = point.x >= bottomLeft.x && point.x <= topRight.x;
+        boolean y = point.y >= bottomLeft.y && point.y <= topRight.y;
         return x && y;
+    }
+
+    /**
+     * Checks if the point is past the right side of the boundary or the bottom of the boundary created by bottomLeft and topRight.
+     * @param bottomLeft The bottom left point of the boundary.
+     * @param topRight The top right point of the bounday.
+     * @param point The point to check for.
+     * @return Whether or not the point is beyond the boundaries bottomRight corner coming from the topLeft.
+     */
+    public static boolean beyondBottomRight(Point bottomLeft, Point topRight, Point point) {
+        return point.x > topRight.x || point.y < bottomLeft.y;
     }
 
     @Override
