@@ -9,7 +9,7 @@ import Utils.Input;
 public class Solution {
     public int part1() {
         var input = Input.getAsStringList(this);
-        var stacks = new ArrayList<Stack<Snailfish>>();
+        var snailfishies = new ArrayList<Snailfish>();
         for (var line : input) {
             var stack = new Stack<Snailfish>();
             for (int i = 0; i < line.length(); i++) {
@@ -45,9 +45,13 @@ public class Solution {
                     }
                 }
             }
-            stacks.add(stack);
+            snailfishies.add(stack.pop());
         }
         return 0;
+    }
+
+    public Snailfish split(Snailfish snailfish) {
+        
     }
 
     public int part2() {
